@@ -1,5 +1,0 @@
---Average node degree - 2.093 which indicates the average value of degree across nodes signifying the average number of edges through each node.
-
---Diameter of the graph - 4 which implies the largest number of vertices that must be traversed to travel from one vertex to another discounting detour and loops.
-
---Average path length - 2.885 which implies the average number of steps along the shortest paths for all possible pairs of network nodes.

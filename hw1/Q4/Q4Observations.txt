@@ -1,6 +1,0 @@
-1. 920
-2. value.toDate().datePart("weekday") + ', ' + value.toDate().toString('MMMM dd, YYYY')
-3. nominal - regionidzip; ordinal - buildingqualitytypeid
-4. value.toNumber() > 3
-5. if(value[-1]=="*",value[0,-1],value)
-6. Many columns are count of some feature and therefore whole numbers. For example, fullbathcnt and poolcnt. You can remove trailing decimal places for these columns by simply using Edit Cells --> Common transforms --> To number.
