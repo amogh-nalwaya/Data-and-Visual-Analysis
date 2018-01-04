@@ -1,0 +1,1 @@
+For the layout, I have chosen 'Yifan Hu Proportional'. Nodes have been sized proportionally to their degree with a min-max of 20-50pts. Node labels have been added for nodes with out-degree > 2. The spacial arrangement conveys the idea of a central node with all edges directed towards it.
