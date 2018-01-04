@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Interactive</title>
+        <script src="../lib/d3.v3.min.js"></script>
+        <style type="text/css">
+
+            .clubLabel {
+                fill: #a3a3a3;
+                text-anchor: end;
+            }
+
+            .value-label {
+                fill: #FFF;
+            }
+
+            #chart, #chart2 {
+                float: left;
+            }
+
+            path {
+                stroke: steelblue;
+                stroke-width: 2;
+                fill: none;
+            }
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: grey;
+                stroke-width: 1;
+                shape-rendering: crispEdges;
+            }
+            .tick {
+                font-size: 11px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="chart"></div>
+        <div id="chart2"></div>
+        <script type="text/javascript">
+
+            var width = 800;
+            var height = 600;
+            var padding = 40;
+            var barWidth = 60;
+            var lineChart;
+
+            var dataset = [{club:'Manchester United',value:{year_2013:3165, year_2014:2810, year_2015:3100, year_2016:3317, year_2017:4583}}, {club:'Chelsea',value:{year_2013:901, year_2014:868, year_2015:1370, year_2016:1661, year_2017:1845}}, {club:'Manchester City',value:{year_2013:689, year_2014:863, year_2015:1380, year_2016:1921, year_2017:2083}}, {club:'Liverpool',value:{year_2013:651, year_2014:704, year_2015:982, year_2016:1548, year_2017:1492}}, {club:'Arsenal',value:{year_2013:1326, year_2014:1331, year_2015:1310, year_2016:2017, year_2017:1932}}];
+
+            var clubs = [];
+
+            for (var i = 0; i < dataset.length; i++) {
+                club = dataset[i];
+                total = club.value.year_2013 + club.value.year_2014 + club.value.year_2015 + club.value.year_2016 + club.value.year_2017;
+                values = [club.value.year_2013, club.value.year_2014, club.value.year_2015, club.value.year_2016, club.value.year_2017];
+                clubs.push({
+                    club : club.club,
+                    total : total,
+                    values: values
+                });
+            }
+
+            var valueScale = d3.scale.linear()
+                .domain([0, d3.max(clubs, function(d) { return d.total; })])
+                .range([padding, width - padding * 2]);
+
+            var svg = d3.select("#chart").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(100, 100)");
+
+            var clubLabels = svg.selectAll(".clubLabel")
+                .data(clubs)
+                .enter().append("text")
+                    .text(function (d) { return d.club; })
+                    .attr("x", 100)
+                    .attr("y", function (d, i) { return i * barWidth; })
+                    .attr("transform", "translate("+ barWidth * 1.5+ "," + barWidth / 4+ ")")
+                    .attr("class", "clubLabel");
+
+            var values = svg.selectAll(".value")
+                .data(clubs);
+
+            values.enter().append("rect")
+                .attr("x", 200)
+                .attr("y", function(d, i) { return barWidth * i; })
+                .attr("width", function(d) {return valueScale(d.total)})
+                .attr("height", barWidth - (padding / 1.5))
+                .attr("class", "values")
+                .style("fill", "#a3a3a3")
+                .on("mouseover", function(d){
+                    d3.select(this).style("fill", "#0078D7");
+                    createLineChart(d.values);
+                })
+                .on("mouseout", function(d){
+                    d3.select(this).style("fill", "#a3a3a3");
+                    document.getElementById("chart2").innerHTML = "";
+                });
+                values.exit().remove();
+
+            var valueLabels = svg.selectAll(".value-label").data(clubs);
+
+            valueLabels.enter().append("text")
+               .text(function(d) {
+                    return "$" + d.total;
+               })
+               .attr("x", "205")
+               .attr("y", function(d, i) { return (barWidth * i) + (barWidth / 2) - 10; })
+               .attr("class", "value-label");
+
+            function createLineChart(values) {
+
+                lineChart = d3.selectAll("#chart2").append("svg")
+                    .attr("width", "400")
+                    .attr("height", "400")
+                    .append("g")
+                    .attr("transform", "translate(100, 100)");
+
+                var yLineChartScale = d3.scale.linear()
+                            .domain([d3.min(values, function(d) { return d; }) - 200, d3.max(values, function(d) { return d; })])
+                            .range([200, 0]);
+
+                var years = ["2013", "2014", "2015", "2016", "2017"];
+                var xYearScale = d3.scale.ordinal()
+                    .domain(years)
+                    .rangePoints([0, 200]);
+
+                lineChart.append("path")
+                    .datum(values)
+                    .attr("fill", "none")
+                    .attr("stroke", "blue")
+                    .attr("d", d3.svg.line()
+                            .x(function(d, i) { return xYearScale(years[i]); })
+                            .y(function(d) { return yLineChartScale(d); })
+                    );
+
+                var xAxis = d3.svg.axis().scale(xYearScale)
+                    .orient("bottom").ticks(5);
+
+                var yAxis = d3.svg.axis().scale(yLineChartScale)
+                    .orient("left").ticks(7);
+
+                lineChart.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0, 200)")
+                    .call(xAxis);
+
+                lineChart.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis);
+
+                lineChart.append("text")
+                    .attr("x", -40)
+                    .attr("y", -10)
+                    .text("Value");
+
+                lineChart.append("text")
+                    .attr("x", 200)
+                    .attr("y", 200)
+                    .text("Year");
+            }
+
+        </script>
+    </body>
+</html>
