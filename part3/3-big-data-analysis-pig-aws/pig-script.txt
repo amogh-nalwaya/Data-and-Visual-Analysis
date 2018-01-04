@@ -1,0 +1,7 @@
+bigrams = LOAD 's3://cse6242-2017fall-aws-big/*' AS (bigram:chararray, year:int, occurrences:float, books:float);
+filtered_records = FILTER bigrams BY occurrences >= 200 and books >= 10;
+grouped_records = GROUP filtered_records BY bigram;
+average_count = FOREACH grouped_records GENERATE group, (SUM(filtered_records.occurrences)/SUM(filtered_records.books)) AS avg;
+ordered_records = ORDER average_count BY avg DESC, group ASC;
+limit_records = LIMIT ordered_records 10;
+STORE limit_records INTO 's3://cse6242-analwaya3/output-big' USING PigStorage('\t');
