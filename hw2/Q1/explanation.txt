@@ -1,0 +1,11 @@
+1.a. Formatted using excel 
+--Removed the gridlines and added a bottom border to the header row. 
+--Resized columns and wrapped text wherever necessary. Realigned column headers.
+--Hid / removed columns for Internally displaced persons (IDPs), Returned IDPs and Stateless persons as they contain no data.
+--Removed repetitions for the year and country combination.
+
+1.b. After importing the CSV into tableau,
+--Added Year to Columns and "Measure Values" to rows. Filtered for the four crime rates displayed within Measure Values.
+--Changed y axis label and added a chart title.
+--To scale the line thickness according to values, used the same four attributes within measure names in line marks on the size shelf.
+--For line labels used the same technique with "Measure Names" in marks, but for the labels shelf, writing <Measure Names> as the formula.
