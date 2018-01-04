@@ -1,1 +1,0 @@
-I have used the log scale over the degree of the node to scale the radii of the circles. The log scale helps scale the large differences in node degrees in a visually effective way, in a way scaling down the differences while still keeping the lower end reasonably sized.

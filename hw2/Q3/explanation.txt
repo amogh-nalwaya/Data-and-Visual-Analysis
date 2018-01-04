@@ -1,4 +1,0 @@
-3.a.2. Plasma glucose and insulin should work better at classification because of less overlaping of positive and negative cases compared to the feature combination of BMI and blood pressure.
-
-3.c. Log scaling helps reduce the variability along the scaled axis and can be used in cases where the range of data along the axis has a greater spread.
-While the square root scaling can also help reduce the variability in a limited way, it is more effective in cases where we are trying to scale data which could be a product of two one-dimensional data.
